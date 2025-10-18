@@ -7,6 +7,7 @@ pygame.init()
 white = (255, 255, 255)
 red = (255, 0, 0)
 black = (0, 0, 0)
+blue = (0, 0, 255)
 
 # creating window
 screen_width = 900
@@ -26,10 +27,18 @@ velocity_x = 0
 velocity_y = 0
 food_x = random.randint(20, int(screen_width)-50)
 food_y = random.randint(20, int(scree_height)-20)
+initial_velocity = 5
 score = 0
 snake_size = 10
 fps = 30
 clock = pygame.time.Clock()
+
+
+font = pygame.font.SysFont(None, 50)
+
+def text_screen(text, color , x, y):
+    screen_text = font.render(text, True, color, )
+    gameWindow.blit(screen_text, [x, y])
 
 #game loop
 while not exit_game:
@@ -38,19 +47,19 @@ while not exit_game:
             exit_game = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
-                velocity_x = 5
+                velocity_x = initial_velocity
                 velocity_y = 0
                 
             if event.key == pygame.K_LEFT:
-                velocity_x = -5
+                velocity_x = -initial_velocity
                 velocity_y = 0
                 
             if event.key == pygame.K_UP:
-                velocity_y = -5
+                velocity_y = -initial_velocity
                 velocity_x = 0
                 
             if event.key == pygame.K_DOWN:
-                velocity_y = 5
+                velocity_y = initial_velocity
                 velocity_x = 0
                 
     snake_x += velocity_x
@@ -63,6 +72,8 @@ while not exit_game:
         food_y = random.randint(20, int(scree_height)-20)
 
     gameWindow.fill(white)
+    text_screen("Score : " +str(score), blue, 20, 20)
+
     pygame.draw.rect(gameWindow, red, [food_x, food_y, snake_size, snake_size])
     pygame.draw.rect(gameWindow, black, [snake_x, snake_y, snake_size, snake_size])
     pygame.display.update()
