@@ -1,5 +1,10 @@
 import pygame
 import random
+import os
+
+
+pygame.mixer.init()
+
 
 pygame.init()
 
@@ -47,6 +52,9 @@ def welcome():
                 exit_game = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
+                    my_sound = pygame.mixer.Sound('audio/nagin.mp3')
+                    my_sound.set_volume(0.3)
+                    my_sound.play()
                     GameLoop()
 
         pygame.display.update()
@@ -70,6 +78,9 @@ def GameLoop():
     fps = 30
     snake_list = []
     snake_length = 1
+    if(not os.path.exists("highscore.txt")):
+        with open("highscore.txt", "w") as f:
+            f.write("0")
     with open("highscore.txt", "r") as f:
         highscore = f.read()
 
@@ -138,9 +149,16 @@ def GameLoop():
 
             if head in snake_list[:-1]:
                 game_over = True
+                my_sound2 = pygame.mixer.Sound('audio/bomb.mp3')
+                my_sound2.set_volume(0.3)
+                my_sound2.play()
 
             if snake_x <0 or snake_x > screen_width or snake_y > scree_height or snake_y < 0:
                 game_over = True
+                my_sound2 = pygame.mixer.Sound('audio/bomb.mp3')
+                my_sound2.set_volume(0.3)
+                my_sound2.play()
+                
 
             plot_snake(gameWindow, black, snake_list, snake_size)
             
