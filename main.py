@@ -21,8 +21,10 @@ pygame.display.update()
 
 clock = pygame.time.Clock()
 
-
 font = pygame.font.SysFont(None, 50)
+
+
+
 
 def text_screen(text, color , x, y):
     screen_text = font.render(text, True, color, )
@@ -50,9 +52,14 @@ def GameLoop():
     fps = 30
     snake_list = []
     snake_length = 1
+    with open("highscore.txt", "r") as f:
+        highscore = f.read()
 
     while not exit_game:
         if game_over:
+            with open("highscore.txt", "w") as f:
+                f.write(str(highscore))
+                
             gameWindow.fill(white)
             text_screen("Game over! Press enter to continue", red , 150, 250)
             for event in pygame.event.get():
@@ -91,10 +98,12 @@ def GameLoop():
                 food_x = random.randint(20, int(screen_width)-50)
                 food_y = random.randint(20, int(scree_height)-20)
                 snake_length += 5
+                if score>int(highscore):
+                    highscore = score
 
 
             gameWindow.fill(white)
-            text_screen("Score : " +str(score), blue, 20, 20)
+            text_screen("Score : " +str(score) + "Highscore : " + str(highscore), blue, 20, 20)
 
             pygame.draw.rect(gameWindow, red, [food_x, food_y, snake_size, snake_size])
             
