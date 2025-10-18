@@ -2,9 +2,7 @@ import pygame
 import random
 import os
 
-
 pygame.mixer.init()
-
 
 pygame.init()
 
@@ -24,8 +22,16 @@ pygame.display.set_caption("Snakes with Bhavi")
 pygame.display.update()
 
 
-clock = pygame.time.Clock()
+# Background image
+bgimg = pygame.image.load("images/snake.jpg")
+bgimg = pygame.transform.scale(bgimg, (screen_width, scree_height)).convert_alpha()
 
+
+window_img = pygame.image.load("images/window.jpg")
+window_img = pygame.transform.scale(window_img, (screen_width, scree_height)).convert_alpha()
+
+
+clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 50)
 
 
@@ -41,11 +47,13 @@ def plot_snake(gameWindow, color, snake_list, snake_size):
 
 def welcome():
     exit_game = False
-    blue = (0, 0, 255)
+    green = (70, 255, 0)
     while not exit_game:
         gameWindow.fill((233, 220, 229))
-        text_screen("Welcome to snakes", blue, 280, 200)
-        text_screen("Press space to play the game", blue, 230, 300)
+        gameWindow.blit(window_img, (0, 0))
+
+        text_screen("Welcome to snakes", green, 280, 100)
+        text_screen("Press space to play the game", green, 230, 500)
         
         for event in pygame.event.get():
             if(event.type == pygame.QUIT):
@@ -59,7 +67,6 @@ def welcome():
 
         pygame.display.update()
         clock.tick(60)
-
 
 #game loop
 def GameLoop():
@@ -133,8 +140,8 @@ def GameLoop():
                 if score>int(highscore):
                     highscore = score
 
-
             gameWindow.fill(white)
+            gameWindow.blit(bgimg, (0, 0))
             text_screen("Score : " +str(score) + "   Highscore : " + str(highscore), blue, 20, 20)
 
             pygame.draw.rect(gameWindow, red, [food_x, food_y, snake_size, snake_size])
@@ -159,7 +166,6 @@ def GameLoop():
                 my_sound2.set_volume(0.3)
                 my_sound2.play()
                 
-
             plot_snake(gameWindow, black, snake_list, snake_size)
             
         pygame.display.update()
@@ -168,6 +174,4 @@ def GameLoop():
     pygame.quit()
     quit()
 
-
 welcome()
-# GameLoop()
