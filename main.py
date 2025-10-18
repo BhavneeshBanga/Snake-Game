@@ -24,8 +24,6 @@ clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 50)
 
 
-
-
 def text_screen(text, color , x, y):
     screen_text = font.render(text, True, color, )
     gameWindow.blit(screen_text, [x, y])
@@ -34,6 +32,26 @@ def text_screen(text, color , x, y):
 def plot_snake(gameWindow, color, snake_list, snake_size):
     for x, y in snake_list:
         pygame.draw.rect(gameWindow, color, [x, y, snake_size, snake_size])
+
+
+def welcome():
+    exit_game = False
+    blue = (0, 0, 255)
+    while not exit_game:
+        gameWindow.fill((233, 220, 229))
+        text_screen("Welcome to snakes", blue, 280, 200)
+        text_screen("Press space to play the game", blue, 230, 300)
+        
+        for event in pygame.event.get():
+            if(event.type == pygame.QUIT):
+                exit_game = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    GameLoop()
+
+        pygame.display.update()
+        clock.tick(60)
+
 
 #game loop
 def GameLoop():
@@ -59,7 +77,7 @@ def GameLoop():
         if game_over:
             with open("highscore.txt", "w") as f:
                 f.write(str(highscore))
-                
+
             gameWindow.fill(white)
             text_screen("Game over! Press enter to continue", red , 150, 250)
             for event in pygame.event.get():
@@ -67,7 +85,7 @@ def GameLoop():
                     exit_game = True
                 if event.type == pygame.KEYDOWN:  
                     if(event.key == pygame.K_RETURN):
-                        GameLoop()
+                        welcome()
                     
         else:
             for event in pygame.event.get():
@@ -89,6 +107,9 @@ def GameLoop():
                     if event.key == pygame.K_DOWN:
                         velocity_y = initial_velocity
                         velocity_x = 0
+
+                    if event.key == pygame.K_c:             #cheat code to increase score
+                        score += 10
                         
             snake_x += velocity_x
             snake_y += velocity_y
@@ -103,10 +124,9 @@ def GameLoop():
 
 
             gameWindow.fill(white)
-            text_screen("Score : " +str(score) + "Highscore : " + str(highscore), blue, 20, 20)
+            text_screen("Score : " +str(score) + "   Highscore : " + str(highscore), blue, 20, 20)
 
             pygame.draw.rect(gameWindow, red, [food_x, food_y, snake_size, snake_size])
-            
             
             head = []
             head.append(snake_x)
@@ -130,4 +150,6 @@ def GameLoop():
     pygame.quit()
     quit()
 
-GameLoop()
+
+welcome()
+# GameLoop()
