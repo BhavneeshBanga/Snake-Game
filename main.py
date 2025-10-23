@@ -171,7 +171,7 @@ def GameLoop():
         pygame.display.update()
         clock.tick(fps)
 
-    pygame.quit()
+    pygame.quit() 
     quit()
 
 welcome()
